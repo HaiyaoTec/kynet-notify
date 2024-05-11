@@ -4,6 +4,9 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import clsx from "clsx";
+import Login from "@/app/login";
+import {Navbar} from "@/components/navbar";
+import Sidebar from "@/components/sidebar";
 
 export const metadata: Metadata = {
 	title: {
@@ -38,8 +41,10 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col h-screen">
-						<main className="container mx-auto max-w-7xl  flex-grow">
+          <Login/>
+					<div className="relative flex  h-screen">
+            <Sidebar/>
+						<main className="container max-w-full mx-auto w-full flex-1 flex-grow">
 							{children}
 						</main>
 					</div>
