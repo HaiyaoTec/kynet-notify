@@ -40,7 +40,7 @@ export default function RootLayout({
 					fontSans.variable
 				)}
 			>
-				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+				<Providers themeProps={{ attribute: "class", enableSystem:true}}>
           <Login/>
 					<div className="relative flex  h-screen">
             <Sidebar/>

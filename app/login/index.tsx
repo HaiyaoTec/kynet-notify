@@ -6,7 +6,6 @@ import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/button";
 import toast from "react-hot-toast";
 import {request} from "@/components/lib";
-import {useRouter} from "next/navigation";
 import {Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure} from "@nextui-org/modal";
 import {cn} from "@nextui-org/react";
 import {useUserToken} from "@/components/token-providers";
@@ -63,9 +62,9 @@ export default function Login() {
             <ModalBody>
               <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-y-3'}>
                 <Input errorMessage={errors.account?.message} isInvalid={!!errors.account} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1'}} autoFocus={true}
-                       label={'账号:'} variant={'bordered'} {...register("account", {required: '请输入账号!',})}/>
+                       label={'账号'} variant={'bordered'} {...register("account", {required: '请输入账号!',})}/>
                 <Input  type={'password'} errorMessage={errors.password?.message} isInvalid={!!errors.password} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1'}}
-                       label={'密码:'}
+                       label={'密码'}
                        variant={'bordered'} {...register("password", {required: '请输入密码!'})}/>
                 {error&&!loading && <p className={'text-red-500'}>{error}</p>}
               </form>
