@@ -53,7 +53,7 @@ export default function AddAlarm(props:{project:string,getMenus:()=>void}){
       })
   }
   return <>
-    <Button onClick={onOpen} className={'flex justify-between w-full'} radius={'none'} size={'sm'} variant={'light'} color={'default'} endContent={<Add className={'[&_path]:fill-black'} width={'12px'} height={'12px'}/>}>
+    <Button onClick={onOpen} className={'flex justify-between w-full'} radius={'none'} size={'sm'} variant={'light'} color={'default'} endContent={<Add className={'[&_path]:fill-black dark:[&_path]:fill-white'} width={'12px'} height={'12px'}/>}>
       <span className={''}>警告类型</span>
     </Button>
     <Modal isOpen={isOpen} size={'md'} onOpenChange={onOpenChange} placement={'auto'} >
@@ -65,11 +65,11 @@ export default function AddAlarm(props:{project:string,getMenus:()=>void}){
               <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-y-3 '}>
                 <Input errorMessage={errors.title?.message} isInvalid={!!errors.title} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right'}} autoFocus={true}
                        label={'标题'} variant={'bordered'} {...register("title", {required: '请输入标题!',})}/>
-             <Input errorMessage={errors.typeMatch?.message} isInvalid={!!errors.typeMatch} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right'}} autoFocus={true}
+             <Input errorMessage={errors.typeMatch?.message} isInvalid={!!errors.typeMatch} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right'}} autoFocus={false}
                        label={'Type匹配'} variant={'bordered'} {...register("typeMatch", {required: '请输入Type匹配!',})}/>
-             <Textarea errorMessage={errors.contentMatch?.message} isInvalid={!!errors.contentMatch} size={'md'} labelPlacement={'outside-left'}  classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right',helperWrapper:''}} autoFocus={true}
+             <Textarea errorMessage={errors.contentMatch?.message} isInvalid={!!errors.contentMatch} size={'md'} labelPlacement={'outside-left'}  classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right',helperWrapper:''}} autoFocus={false}
                        label={'Content匹配'} variant={'bordered'} {...register("contentMatch", {required: '请输入Content匹配!',})}/>
-             <Input errorMessage={errors.weight?.message} isInvalid={!!errors.weight} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right'}} autoFocus={true}
+             <Input errorMessage={errors.weight?.message} isInvalid={!!errors.weight} size={'md'} labelPlacement={'outside-left'} classNames={{mainWrapper: 'flex-1',label:'min-w-[90px] text-right'}} autoFocus={false}
                        label={'权重'} variant={'bordered'} {...register("weight", {required: '请输入标题!',})}/>
                 {error&&!loading && <p className={'text-red-500'}>{error}</p>}
               </form>

@@ -40,13 +40,14 @@ export default function RootLayout({
 					fontSans.variable
 				)}
 			>
-				<Providers themeProps={{ attribute: "class", enableSystem:true}}>
+				<Providers themeProps={{ attribute: "class", enableSystem:true,defaultTheme:'light'}}>
           <Login/>
 					<div className="relative flex  h-screen">
-            <Sidebar/>
-						<main className="container max-w-full mx-auto w-full flex-1 flex-grow">
-							{children}
-						</main>
+            <Sidebar>
+							<main className="container max-w-full mx-auto w-full flex-1 flex-grow">
+								{children}
+							</main>
+						</Sidebar>
 					</div>
 				</Providers>
 			</body>

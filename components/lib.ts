@@ -1,3 +1,6 @@
+import {createContext} from "react";
+import {Menu} from "@/components/sidebar";
+
 const request = async (url:string,method:'POST'|'GET',data?: { })=>{
   const returnData = fetch(url, {method: method, body: data?JSON.stringify(data):undefined, headers: {"Content-Type": 'application/json','admin_token':localStorage.getItem('user-token')||''}})
   const response = await returnData
@@ -9,5 +12,8 @@ const request = async (url:string,method:'POST'|'GET',data?: { })=>{
   })
   return json
 }
-export {request}
+
+const SidebarContext = createContext({sidebar:false,transform:()=>{},curMenu:undefined as Menu|undefined,projectName:'' as string|undefined})
+
+export {request,SidebarContext}
 
