@@ -4,9 +4,8 @@ import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import clsx from "clsx";
-import Login from "@/app/login";
-import {Navbar} from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
+import Login from "@/components/popUps/login";
 
 export const metadata: Metadata = {
 	title: {

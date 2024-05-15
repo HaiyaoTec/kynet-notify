@@ -1,10 +1,36 @@
+'use client'
 import {Chip} from "@nextui-org/chip";
 import {Menu} from "@/components/sidebar";
 import {Button} from "@nextui-org/button";
+import {usePathname, useRouter} from "next/navigation";
+import {cn} from "@nextui-org/react";
+import {useContext, useEffect, useState} from "react";
+import {request, SidebarContext, UnreadContext} from "@/components/lib";
+import {useLocalStorageState} from "ahooks";
 
-export default function alarmItem(props:{menu:Menu}){
-  const {title,} = props.menu;
-  return <Button radius={'none'} variant={'light'} className={'w-full flex justify-between pl-8'}>
-    <span className={'text-sm'}>{title}</span><Chip size={'sm'} color={'warning'} className={'text-white min-w-8'}>{1}</Chip>
+export default function AlarmItem(props:{menu:Menu}){
+  const {title,id} = props.menu
+  const pathname = usePathname()
+  const {curProject} = useContext(SidebarContext)
+  const router = useRouter()
+  const alarmId = pathname.match(/\/[^/]+\/([^/]+)/)?.[1]
+  const [startTimes,setStartTimes] = useContext(UnreadContext)
+  const goHref = (id:number)=>{
+    if (Number(alarmId)===id)return
+    router.push(`./${id}`)
+  }
+  useEffect(() => {
+    if (curProject){
+      request(`http://172.25.5.161:8080/api/admin/sky/notify/msg?accessToken=${curProject?.accessToken}${Number(id)===-1?'':`&pipelineId=${id}`}&count=1&page=1&startTime=${(startTimes[`${curProject?.id}+${id}`]?.startTime)?startTimes[`${curProject?.id}+${id}`].startTime:Date.now()}`,'GET')
+        .then((res)=>{
+          setStartTimes((prev:any)=>{
+            return {...prev,[`${curProject?.id}+${id}`]:{...prev[`${curProject?.id}+${id}`],unread:res.totalCount,}}
+          })
+        })
+    }
+  }, [curProject]);
+  
+  return <Button onClick={()=>goHref(id)} radius={'none'} variant={'light'} className={cn('w-full flex justify-between pl-8 ',Number(alarmId)===id?'bg-default/40':'')}>
+    <span className={'text-sm'}>{title}</span>{startTimes[`${curProject?.id}+${id}`]?.unread>0?<Chip size={'sm'} color={'warning'}>{startTimes[`${curProject?.id}+${id}`]?.unread}</Chip>:null}
   </Button>
 }
