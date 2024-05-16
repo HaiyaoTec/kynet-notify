@@ -1,4 +1,5 @@
 import {createContext, ReactNode, useContext, useEffect, useLayoutEffect, useState} from "react";
+import {useAsgard} from "@/components/asgard";
 
 const TokenContext = createContext<({token:string,setToken:(token:string)=>void})|null>(null);
 const useUserToken = () => {
@@ -11,6 +12,7 @@ const useUserToken = () => {
 
 const TokenProvider = ({children}: { children: ReactNode }) => {
   const [token,setToken ] = useState('')
+  const asgard = useAsgard()
   const setValue =(_token:string)=> {
     localStorage.setItem('user-token',_token)
     setToken(_token)
@@ -34,7 +36,11 @@ const TokenProvider = ({children}: { children: ReactNode }) => {
       setToken(token)
     }
   }, []);
-  
+  useLayoutEffect(() => {
+    if (token) {
+      asgard.auth(token)
+    }
+  }, [token]);
   return <TokenContext.Provider value={{token,setToken:setValue}}>
     {children}
   </TokenContext.Provider>

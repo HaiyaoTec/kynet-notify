@@ -8,6 +8,7 @@ import { ThemeProviderProps } from "next-themes/dist/types";
 import toast, {Toaster, useToasterStore} from "react-hot-toast";
 import {useEffect} from "react";
 import {TokenProvider} from "@/components/token-providers";
+import {AsgardProvider} from "@/components/asgard";
 
 export interface ProvidersProps {
 	children: React.ReactNode;
@@ -29,10 +30,12 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 	return (
 		<NextUIProvider navigate={router.push}>
 			<NextThemesProvider {...themeProps}>
+        <AsgardProvider>
         <TokenProvider>
           <Toaster position="top-right" reverseOrder={false}/>
           {children}
         </TokenProvider>
+        </AsgardProvider>
       </NextThemesProvider>
 		</NextUIProvider>
 	);

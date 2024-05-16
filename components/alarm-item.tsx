@@ -20,7 +20,7 @@ export default function AlarmItem(props:{menu:Menu}){
     router.push(`./${id}`)
   }
   useEffect(() => {
-    if (curProject){
+    if (curProject&&(Number(alarmId)!==id)){
       const startTime = (startTimes[`${curProject?.id}+${id}`]?.startTime)?startTimes[`${curProject?.id}+${id}`].startTime:Date.now()
       request(`http://172.25.5.161:8080/api/admin/sky/notify/msg?accessToken=${curProject?.accessToken}${Number(id)===-1?'':`&pipelineId=${id}`}&count=1&page=1&startTime=${startTime}`,'GET')
         .then((res)=>{

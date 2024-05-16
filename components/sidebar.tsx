@@ -1,5 +1,5 @@
 'use client'
-import {Card, CardBody, CardFooter, CardHeader} from "@nextui-org/card";
+import {Card, CardBody, CardHeader} from "@nextui-org/card";
 import {cn, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger} from "@nextui-org/react";
 import {Button} from "@nextui-org/button";
 import {SelectorIcon} from "@nextui-org/shared-icons";
@@ -13,13 +13,18 @@ import AlarmItem from "./alarm-item";
 import {useIsMobile} from "@nextui-org/use-is-mobile";
 import {useDisclosure} from "@nextui-org/modal";
 import {useLocalStorageState} from "ahooks";
+import {useAsgard} from "@/components/asgard";
+import {AsgardState} from "@imf/asgard-web/dist/DAsgard";
+
 export interface Menu {
   id:number,title:string,type:number,weight:number,typeMatch:string,contentMatch:string,
   unread?:number
 }
+export interface Push{time:number,type:string,project:string,application:string,subject:string,pipelineId:number,content:string}
 export interface Project{id:number,projectName:string,accessToken:string}
 export default function Sidebar({children}: { children: ReactNode }) {
   const router = useRouter()
+  const asgard = useAsgard()
   const isMobile = useIsMobile()
   const {isOpen,onOpen,onClose} = useDisclosure()
   useLayoutEffect(() => {
@@ -81,6 +86,26 @@ export default function Sidebar({children}: { children: ReactNode }) {
      }
   },[curId,token])
   const startTimes = useLocalStorageState<Record<string, {startTime:number,unread:number}>>('startTimes',{defaultValue:{}})
+  useEffect(() => {
+    let broadcast:any = undefined;
+    const stateSubject = asgard.stateSubject.subscribe((state)=>{
+      if (state===AsgardState.CONNECTED&&curId!==undefined){
+         broadcast = asgard.broadcast<any,Push>(`/ws/sky/notify/${curId}/msg`).subscribe((msg)=>{
+           console.log(msg)
+          const [sTimes,setStartTimes] =  startTimes
+           setStartTimes(v=>{
+             const time = v![`${curId}+${msg.pipelineId}`]
+             const time1 = v![`${curId}+-1`]
+             return {...v,[`${curId}+${msg.pipelineId}`]:{unread:(time.unread||0)+1,startTime:time.startTime},[`${curId}+-1`]:{unread:(time1.unread||0)+1,startTime:time1.startTime}}
+           })
+        })
+      }
+    })
+    return ()=>{
+      broadcast?.unsubscribe()
+      stateSubject.unsubscribe()
+    }
+  }, [curId]);
   return <SidebarContext.Provider value={{curProject:project,sidebar:isOpen,transform:isOpen?onClose:onOpen, curMenu,refresh:getMenus}}>
     <UnreadContext.Provider value={startTimes}>
     {isMobile&&<div onClick={onClose} className={cn('fixed z-[90] sm:z-0 w-[100vw] h-full bg-overlay/50  top-0 left-0 transition-opacity',isOpen?'opacity-100 pointer-events-auto':'opacity-0 pointer-events-none')}/>}

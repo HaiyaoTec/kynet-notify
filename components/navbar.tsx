@@ -18,7 +18,6 @@ export const MatchContext = createContext<IMatch|undefined>({
   type: ""
 })
 
-export const MockContext = createContext<IMock|undefined>(undefined)
 
 export const Navbar = ({children}: { children: ReactNode }) => {
 	  const {transform,curMenu,curProject,refresh} = useContext(SidebarContext)
@@ -27,7 +26,6 @@ export const Navbar = ({children}: { children: ReactNode }) => {
     const disclosureMock = useDisclosure();
     const formMock = useForm<IMock>()
   const router = useRouter()
-    const [create,setCreate] = useState<IMock>()
     const onSubmitMock = (data:IMock)=>{
       const res = request(`http://172.25.5.161:8080/api/admin/sky/notify/${curProject?.id}/mock?accessToken=${curProject?.accessToken}`, 'POST', {...data,accessToken:curProject?.accessToken,application:'mock',"subject": "subject", createTime: Math.floor(new Date().getTime()/1000)})
       toast.promise(res,{
@@ -37,9 +35,6 @@ export const Navbar = ({children}: { children: ReactNode }) => {
           if (res.errMsg)throw new Error(res.errMsg)
           disclosureMock.onClose()
           formMock.reset()
-          setTimeout(()=>{
-            setCreate(data)
-          },1000)
           return '创建成功'
         }
       })
@@ -143,9 +138,7 @@ export const Navbar = ({children}: { children: ReactNode }) => {
         <Alarm disclosure={disclosureAlarm} form={formAlarm} onSubmit={onSubmitAlarm} error={error} loading={loading} title={'编辑聚类'}/>
 		</div>
     <MatchContext.Provider value={curMenu?.type===0?match:undefined}>
-      <MockContext.Provider value={create}>
         {children}
-      </MockContext.Provider>
     </MatchContext.Provider>
   </>
 };
