@@ -53,6 +53,9 @@ export default function Page({ params }: { params: { project: number,alarmId:num
     setStartTimes((prev:any)=>{
       return {...prev,[`${curProject?.id}+${alarmId}`]:{unread:0,startTime:Date.now()}}
     })
+    ref.current?.scrollTo({
+      behavior: 'smooth', left: 0, top: 0
+    })
   }
   return <div className={'overflow-auto max-h-[calc(100vh_-_48px)] '} ref={ref} >
     <Chip onClick={getNew} size={'lg'} className={cn('text-white bg-amber-600 absolute right-[16px] top-[58px] transition-all opacity-0 translate-y-full cursor-pointer text-sm',curUnread>0&&'opacity-100 translate-y-0')} endContent={<UpIcon className={'[&_path]:fill-white w-4 h-4'}/>}>{curUnread}条新日志</Chip>

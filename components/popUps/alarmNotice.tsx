@@ -7,7 +7,8 @@ import { UseDisclosureReturn} from "@nextui-org/use-disclosure";
 import {UseFormReturn} from "react-hook-form/dist/types";
 import {SubmitHandler} from "react-hook-form";
 import {request, SidebarContext} from "@/components/lib";
-import AceEditor from "react-ace";
+import YamlEditor from "@focus-reactive/react-yaml";
+
 export interface IAlarmNotice {
   body:string
 }
@@ -67,29 +68,7 @@ export default function AlarmNotice(props:{disclosure:UseDisclosureReturn,form: 
           <ModalHeader className={cn("flex flex-col")}>{title}通知</ModalHeader>
           <ModalBody>
             <form onSubmit={handleSubmit(onSubmit)} className={'flex flex-col gap-y-3 '}>
-              {loadingBody||<AceEditor
-                placeholder='输入模版'
-                mode="yaml"
-                theme="monokai"
-                fontSize={14}
-                lineHeight={19}
-                showPrintMargin={true}
-                showGutter={true}
-                value={form.getValues('body')}
-                onChange={(value)=>form.setValue('body',value)}
-                highlightActiveLine={true}
-                setOptions={{
-                  enableBasicAutocompletion: false,
-                  enableLiveAutocompletion: false,
-                  enableSnippets: false,
-                  showLineNumbers: true,
-                  tabSize: 2,
-                }}/>}
-              {/*{loadingBody||<Input errorMessage={errors.body?.message} isInvalid={!!errors.body} size={'md'}*/}
-              {/*        labelPlacement={'outside-left'}*/}
-              {/*        classNames={{mainWrapper: 'flex-1', label: 'min-w-[90px] text-right', helperWrapper: ''}}*/}
-              {/*        autoFocus={false}*/}
-              {/*        variant={'bordered'} {...register("body")}/>}*/}
+              {loadingBody||<YamlEditor text={form.getValues('body')} onChange={(value)=>form.setValue('body',value.text)}/>}
               {error&&!loading && <p className={'text-red-500'}>{error}</p>}
             </form>
           </ModalBody>
