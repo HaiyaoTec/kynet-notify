@@ -81,7 +81,6 @@ export default function Sidebar({children}: { children: ReactNode }) {
      }
   },[curId,token])
   const startTimes = useLocalStorageState<Record<string, {startTime:number,unread:number}>>('startTimes',{defaultValue:{}})
- 
   return <SidebarContext.Provider value={{curProject:project,sidebar:isOpen,transform:isOpen?onClose:onOpen, curMenu,refresh:getMenus}}>
     <UnreadContext.Provider value={startTimes}>
     {isMobile&&<div onClick={onClose} className={cn('fixed z-[90] sm:z-0 w-[100vw] h-full bg-overlay/50  top-0 left-0 transition-opacity',isOpen?'opacity-100 pointer-events-auto':'opacity-0 pointer-events-none')}/>}

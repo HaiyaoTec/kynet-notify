@@ -43,7 +43,7 @@ export default function RootLayout({
           <Login/>
 					<div className="relative flex  h-screen">
             <Sidebar>
-							<main className="container max-w-full mx-auto w-full flex-1 flex-grow">
+							<main className="container max-w-full mx-auto w-full flex-1 flex-grow relative">
 								{children}
 							</main>
 						</Sidebar>

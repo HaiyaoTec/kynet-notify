@@ -329,3 +329,16 @@ export const VerticalDotsIcon:React.FC<IconSvgProps>  = ({size = 24, width, heig
     />
   </svg>
 );
+
+
+export const UpIcon: React.FC<IconSvgProps> = (props) => {
+  const {width, height = 40} = props;
+  return (
+    <svg fill="none"
+         height={height}
+         width={width}
+         {...props} viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <path d="M199.36 572.768a31.904 31.904 0 0 0 22.624-9.376l294.144-294.144 285.728 285.728a31.968 31.968 0 1 0 45.248-45.248l-308.352-308.352a32 32 0 0 0-45.28 0l-316.768 316.768a31.968 31.968 0 0 0 22.656 54.624z" p-id="2305"></path><path d="M538.784 457.376a32 32 0 0 0-45.28 0l-316.768 316.768a31.968 31.968 0 1 0 45.248 45.248l294.144-294.144 285.728 285.728a31.968 31.968 0 1 0 45.248-45.248l-308.32-308.352z" p-id="2306"></path>
+    </svg>
+  );
+};
